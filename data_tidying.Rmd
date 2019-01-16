@@ -21,10 +21,12 @@ To call a function from a specific package type 'package_name::function_name()'
 Read in the data file
 
 ```{r}
-catch <- read.csv(file = "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", stringsAsFactors = FALSE)
+catch <- read.csv(file = "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1",
+                  stringsAsFactors = FALSE)
 
 # for Windows there could be a problem, if so, use the following
-#read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", method = "libcurl"),stringsAsFactors = FALSE)
+#read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", 
+#               method = "libcurl"),stringsAsFactors = FALSE)
 
 head(catch)
 ```
