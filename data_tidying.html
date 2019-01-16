@@ -197,14 +197,14 @@ library(tidyr)</code></pre>
 <div id="data-tidying" class="section level1">
 <h1>Data Tidying</h1>
 <p>Read in the data file</p>
-<pre class="r"><code>catch &lt;- read.csv(file = &quot;https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1&quot;,
+<pre class="r"><code>catch_df &lt;- read.csv(file = &quot;https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1&quot;,
                   stringsAsFactors = FALSE)
 
 # for Windows there could be a problem, if so, use the following
 #read.csv(url(&quot;https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1&quot;, 
 #               method = &quot;libcurl&quot;),stringsAsFactors = FALSE)
 
-head(catch)</code></pre>
+head(catch_df)</code></pre>
 <pre><code>##   Region Year Chinook Sockeye Coho Pink Chum All notesRegCode
 ## 1    SSE 1886       0       5    0    0    0   5             
 ## 2    SSE 1887       0     155    0    0    0 155             
@@ -218,7 +218,7 @@ head(catch)</code></pre>
 <li>Remove marginal sum and notes column</li>
 <li>Move from wide to long format</li>
 </ul>
-<pre class="r"><code>catch_long &lt;- catch %&gt;%
+<pre class="r"><code>catch_long &lt;- catch_df %&gt;%
   select(-All, -notesRegCode) %&gt;% 
   # in gather you need to specify columns - this can be positive or negative
   gather(key = &quot;species&quot;, value = &quot;catch&quot;, -Year, -Region)
@@ -231,6 +231,8 @@ head(catch_long)</code></pre>
 ## 4    SSE 1889 Chinook     0
 ## 5    SSE 1890 Chinook     0
 ## 6    SSE 1891 Chinook     0</code></pre>
+<pre class="r"><code>catch_cleaned &lt;- catch_long %&gt;% 
+  rename(catch_thousands = catch)</code></pre>
 </div>
 <div id="split-apply-combine" class="section level1">
 <h1>Split-Apply-Combine</h1>

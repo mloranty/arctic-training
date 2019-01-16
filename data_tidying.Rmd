@@ -21,14 +21,14 @@ To call a function from a specific package type 'package_name::function_name()'
 Read in the data file
 
 ```{r}
-catch <- read.csv(file = "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1",
+catch_df <- read.csv(file = "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1",
                   stringsAsFactors = FALSE)
 
 # for Windows there could be a problem, if so, use the following
 #read.csv(url("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", 
 #               method = "libcurl"),stringsAsFactors = FALSE)
 
-head(catch)
+head(catch_df)
 ```
 
 cmd + shift + m is the keyboard shortcut for the pipe operator %>%
@@ -39,12 +39,30 @@ This section will make the catch data frame tidy
 *  Move from wide to long format 
 
 ```{r}
-catch_long <- catch %>%
+catch_long <- catch_df %>%
   select(-All, -notesRegCode) %>% 
   # in gather you need to specify columns - this can be positive or negative
   gather(key = "species", value = "catch", -Year, -Region)
 
 head(catch_long)
+```
+
+
+
+```{r}
+catch_cleaned <- catch_long %>% 
+  rename(catch_thousands = catch) #%>% 
+ # mutate(catch = catch_thousands*1000)
+
+```
+
+
+```{r}
+test_catch <- as.integer(catch_cleaned$catch_thousands)
+
+i <- which(is.na(test_catch)==T)
+
+catch_cleaned[i,]
 ```
 
 # Split-Apply-Combine
