@@ -31,6 +31,22 @@ catch <- read.csv(file = "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df3
 head(catch)
 ```
 
+cmd + shift + m is the keyboard shortcut for the pipe operator %>%
+
+This section will make the catch data frame tidy
+
+*  Remove marginal sum and notes column 
+*  Move from wide to long format 
+
+```{r}
+catch_long <- catch %>%
+  select(-All, -notesRegCode) %>% 
+  # in gather you need to specify columns - this can be positive or negative
+  gather(key = "species", value = "catch", -Year, -Region)
+
+head(catch_long)
+```
+
 # Split-Apply-Combine
 
 # Joins
