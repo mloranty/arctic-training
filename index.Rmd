@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# knitr::opts_chunk$set(echo = FALSE) - this will supress prining of all code, only plots will show up, but you can set echo = T, to override and have an individual chunk print. 
 ```
 
 ```{r, warning = F, message = F}
@@ -14,6 +15,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(DT)
+library(leaflet)
 ```
 
 # Data Tidying
@@ -90,3 +92,31 @@ p <- ggplot(annual_esc, aes(x = year, y = escapement, color = Species)) +
 
 
 # Interactive Map
+
+Make a map using leaflet  
+
+* find unique locations with lat/lon values
+```{r}
+locations <- esc %>% 
+  distinct(Location, Latitude, Longitude) %>% 
+  drop_na()
+
+datatable(locations)
+
+```
+
+
+```{r}
+leaflet(locations) %>% 
+  addTiles() %>% #adds open source background map
+  addMarkers(~Longitude, ~Latitude, popup = ~Location)
+```
+
+
+
+
+
+
+
+
+
