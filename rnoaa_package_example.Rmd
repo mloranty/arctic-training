@@ -1,0 +1,66 @@
+---
+title: "R NOAA package example"
+author: "Mike Loranty"
+date: "1/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# `rnoaa` package
+
+```{r}
+#install.packages("rnoaa")
+#install.packages("ncdf4")
+
+library(rnoaa)
+library(ncdf4)
+library(ggplot2)
+```
+
+```{r}
+bd <- buoy(dataset = "cwind", buoyid = 46080, year = 2018, datatype = "c")
+wind.speed <- data.frame(time = as.POSIXct(bd$data$time), speed = bd$data$wind_spd,
+                         stringsAsFactors = F)
+# the above code turns the date/time into data only
+# use strptime below to convert to correct date time
+#strptime(wind.speed$time,"%Y-%m-%dT%TZ")
+
+ggplot(wind.speed, aes(x = time, y = speed)) +
+  geom_point()
+```
+
+# `mapr` package
+
+```{r}
+#install.packages("mapr", dependencies = T)
+
+library(mapr)
+library(spocc)
+```
+
+Plot locations of GBIF species occurence data for grizzly and polar bears
+
+* get the bear data
+```{r}
+spp <- c("Ursus arctos", "Ursus maritimus", "Ursus americanus kermodei")
+bears <- occ(query = spp, 
+             from = "gbif", 
+             has_coords = T, 
+             limit = 500)
+
+```
+
+* make a map of bear locations
+```{r}
+map_leaflet(bears, color = c("black", "grey", "pink"), size = 1, alpha = 1)
+```
+
+* dig into the data a bit
+```{r}
+spirit_bears <- bears$gbif$data$Ursus_americanus_kermodei
+```
+
+
